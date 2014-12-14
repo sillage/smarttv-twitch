@@ -2,14 +2,25 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Twitch</title>
-		
-		<script type="text/javascript" src="$MANAGER_WIDGET/Common/af/2.0.0/loader.js"></script>		
+		<script type="text/javascript" src="$MANAGER_WIDGET/Common/af/2.0.0/loader.js"></script>
+		<link rel="stylesheet" type="text/css" href="app/stylesheets/Main.css">
 	</head>
 	<body>
-    	<script type='text/javascript' src="jquery-1.11.0.js"></script>
-    	
+		<div id="throbber">
+			<div class="spinner" style="display: inline-block;"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
+		</div>
+		<div id="message">Loading...</div>
+		
+		<object id="pluginObjectPlayer" border="0" classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
+
 		<script type='text/javascript' src='$MANAGER_WIDGET/Common/IME_XT9/ime.js'></script>
 		<script type='text/javascript' src='$MANAGER_WIDGET/Common/IME_XT9/inputCommon/ime_input.js'></script>
+
+		<script type='text/javascript' src="app/js/jquery.min.js"></script>
+		<script type='text/javascript' src="app/js/util.js"></script>
+		<script type='text/javascript' src="app/js/status.js"></script>
+		<script type='text/javascript' src="app/js/player.js"></script>
+		<script type='text/javascript' src="app/js/ajax.js"></script>
+		<script type='text/javascript' src="app/js/twitch.js"></script>
 	</body>
 </html>

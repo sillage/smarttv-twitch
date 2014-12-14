@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <widget xmlns="http://www.samsung.com/">
-  <cpname></cpname>
-  <cplogo></cplogo>
-  <cpauthjs></cpauthjs>
-  <ThumbIcon>icon/icon_106_87.png</ThumbIcon>
-  <BigThumbIcon>icon/icon_115_95.png</BigThumbIcon>
-  <ListIcon>icon/icon_85_70.png</ListIcon>
-  <BigListIcon>icon/icon_95_78.png</BigListIcon>
-  <category></category>
-  <autoUpdate>n</autoUpdate>
-  <ver>3.4</ver>
-  <mgrver></mgrver>
-  <fullwidget>y</fullwidget>
-  <type>user</type>
-  <srcctl>y</srcctl>
-  <ticker>n</ticker>
-  <childlock>n</childlock>
-  <videomute>n</videomute>
-  <dcont>y</dcont>
-  <widgetname>Twitch</widgetname>
-  <description></description>
-  <width>1280</width>
-  <height>720</height>
-  <author>
-    <name></name>
-    <email></email>
-    <link></link>
-    <organization></organization>
-  </author>
+	<ThumbIcon>icon/icon_106_87.png</ThumbIcon>
+	<BigThumbIcon>icon/icon_115_95.png</BigThumbIcon>
+	<ListIcon>icon/icon_85_70.png</ListIcon>
+	<BigListIcon>icon/icon_95_78.png</BigListIcon>
+
+	<widgetname>TwitchTV</widgetname>
+	<description>Application to watch Twitch.TV broadcasts</description>
+	<category></category>
+	<ver>3.5-12122014</ver>
+
+	<width>1280</width>
+	<height>720</height>
+
+	<autoUpdate>n</autoUpdate>
+	<mgrver></mgrver>
+	<fullwidget>y</fullwidget>
+	<type>user</type>
+	<srcctl>y</srcctl>
+	<ticker>n</ticker>
+	<childlock>n</childlock>
+	<videomute>n</videomute>
+	<dcont>y</dcont>
+	<movie>y</movie>
+	<mouse>y</mouse>
+	<network>y</network>
+	<voice>n</voice>
+
+	<author>
+		<name></name>
+		<email></email>
+		<link></link>
+		<organization></organization>
+	</author>
+	<cpname></cpname>
+	<cplogo></cplogo>
+	<cpauthjs></cpauthjs>
 </widget>

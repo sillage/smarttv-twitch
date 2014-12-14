@@ -1,11 +1,21 @@
-
 function onStart () {
-	sf.scene.show('SceneBrowser');
-	sf.scene.focus('SceneBrowser');
-}
-function onDestroy () {
-	//stop your XHR or Ajax operation and put codes to destroy your application here
-	
+	setTimeout(function lazyStart() {
+		Status.init('#throbber', '#message');
+		Status.clearMessage();
+
+		Status.signalStart();
+		try {
+			Player.init('pluginObjectPlayer');
+
+			sf.scene.show('SceneBrowser');
+			sf.scene.focus('SceneBrowser');
+		}
+		finally {
+			Status.signalEnd();
+		}
+	}, 0);
 }
 
-alert("init.js loaded.");
+function onDestroy () {
+	Player.stop();
+}
