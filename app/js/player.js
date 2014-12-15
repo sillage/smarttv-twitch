@@ -1,9 +1,11 @@
 var Player = new function() {
 	'use strict';
 
-	var player = null;
+	var self = this;
 	
-	var url = null;
+	var player;
+	
+	var url;
 	var retryCount = 0;
 	var maxRetries = 3;
 
@@ -15,58 +17,59 @@ var Player = new function() {
 		player.OnConnectionFailed = function() {
 			if (++retryCount < maxRetries) {
 				alert('Player.retry(' + retryCount + ', ' + maxRetries + ')');
-				this.play(url);
+				self.play(url);
 			}
 			else {
 				alert('Player.onError(connection)');
-				this.onError('connection');
+				self.stop();
+				self.onError('connection');
 			};
 		};
 
 		player.OnNetworkDisconnected = function() {
 			alert('Player.onError(network)');
-			this.onError('network');
+			self.onError('network');
 		};
 
 		player.OnRenderError = function() {
 			alert('Player.onError(renderer)');
-			this.onError('renderer');
+			self.onError('renderer');
 		};
 
 		player.OnAuthenticationFailed = function() {
 			alert('Player.onError(authentication)');
-			this.onError('authentication');
+			self.onError('authentication');
 		};
 
 		player.OnStreamNotFound = function() {
 			alert('Player.onError(notfound)');
-			this.onError('notfound');
+			self.onError('notfound');
 		};
 
 		player.OnRenderingComplete = function() {
 			alert('Player.onCompleted()');
-			this.onCompleted();
+			self.onCompleted();
 		};
 
 		player.OnBufferingStart = function() {
 			alert('Player.onBufferingStarted()');
-			this.onBufferingStarted();
+			self.onBufferingStarted();
 		};
 
 		player.OnBufferingComplete = function() {
 			alert('Player.onBufferingEnded()');
 			retryCount = 0; 
-			this.onBufferingEnded();
+			self.onBufferingEnded();
 		};
 
 		player.OnBufferingProgress = function (progress) { 
 			alert('Player.onBufferingProgress('+ progress +')');
-			this.onBufferingProgress(progress);
+			self.onBufferingProgress(progress);
 		};
 	};
 	
 	this.play = function(source) {
-		this.stop();
+		self.stop();
 
 		url = source;
 		alert('Player.play('+ source +')');
