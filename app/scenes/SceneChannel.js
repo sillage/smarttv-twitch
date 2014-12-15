@@ -16,48 +16,10 @@ var SceneSceneChannel = function(options) {
 
 	this.initialize = function() {
 		initLanguage();
-		initPlayer();
 	};
 
 	function initLanguage() {
 		$('#label_quality').html(STR_QUALITY);
-	}
-
-	function initPlayer() {
-		Player.onError = function(status) {
-			var message = 'Unexpected error';
-			switch (status) {
-				case 'connection':
-					message = STR_ERROR_CONNECTION_FAIL;
-				break;
-				case 'network':
-					message = STR_ERROR_NETWORK_DISCONNECT;
-				break;
-				case 'renderer':
-					if (quality == "High"
-						|| quality == "Medium"
-						|| quality == "Low") {
-						message = STR_ERROR_RENDER_FIXED;
-						}
-					else {
-						message = STR_ERROR_RENDER_SOURCE;
-					}
-				break;
-				case 'authentication':
-					message = STR_ERROR_AUTHENTICATION_FAIL;
-				break;
-				case 'notfound':
-					message = STR_ERROR_STREAM_NOT_FOUND;
-				break;
-			}
-
-			showDialog(message);
-			shutdownStream();
-		};
-
-		Player.onCompleted = function() { 
-			shutdownStream();
-		};
 	}
 
 	this.handleHide = function() {
@@ -74,21 +36,6 @@ var SceneSceneChannel = function(options) {
 
 	this.handleFocus = function(data) {
 		sf.service.setScreenSaver(true, 100000);
-
-		Ajax.onRequestStarted = function() { Status.signalStart(); };
-		Ajax.onRequestEnded = function() { Status.signalEnd(); };
-
-		Player.onBufferingStarted = function () { 
-			Status.signalStart(); 
-			showDialog(STR_BUFFERING + '...'); 
-		};
-		Player.onBufferingProgress = function (percent) { 
-			showDialog(STR_BUFFERING + ': ' + percent + '%'); 
-		};
-		Player.onBufferingEnded = function () { 
-			Status.clearMessage(); 
-			Status.signalEnd(); 
-		};
 
 		selectedChannel = sf.scene.get('SceneBrowser').getSelectedChannel();
 
