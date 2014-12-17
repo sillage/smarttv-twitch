@@ -1,20 +1,21 @@
 var SceneSceneBrowser = function(options) {
 	'use strict';
 
+	var self = this;
+	
 	var PAGE_SIZE = 32;
 	var COLUMN_COUNT = 4;
 
-	var MODE_NONE = -1;
-	var MODE_ALL = 0;
-	var MODE_GAMES = 1;
-	var MODE_GAMES_STREAMS = 2;
-	var MODE_GO = 3;
+	var MODE_ALL = sf.key.RED;
+	var MODE_GAMES = sf.key.GREEN;
+	var MODE_GAMES_STREAMS = 0;
 
 	var selectedChannel;
 	var gameSelected;
 
-	var mode = MODE_NONE;
+	this.mode = MODE_ALL;
 	var itemsCount = 0;
+
 	var cursorX = 0;
 	var cursorY = 0;
 
@@ -26,30 +27,19 @@ var SceneSceneBrowser = function(options) {
 	};
 
 	this.initialize = function() {
-		initLanguage();
-
-		$("#streamname_frame").hide();
-		switchMode(MODE_ALL);
+		//switchMode(MODE_ALL);
 	};
 
-	function initLanguage() {
-		$('.label_channels').html(STR_CHANNELS);
-		$('.label_games').html(STR_GAMES);
-		$('.label_open').html(STR_OPEN);
-		$('.label_refresh').html(STR_REFRESH);
-		$('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
-	}
-
 	this.handleShow = function(data) {
-		sf.service.setVolumeControl(true);
+		//sf.service.setVolumeControl(true);
 	};
 
 	this.handleHide = function() {
-		clean();
+		//clean();
 	};
 
 	this.handleFocus = function() {
-		refresh();
+		switchMode(self.mode);
 	};
 
 	this.handleBlur = function() { };
@@ -61,92 +51,47 @@ var SceneSceneBrowser = function(options) {
 
 		switch (keyCode) {
 			case sf.key.RETURN:
-				sf.key.preventDefault();
+				if (self.mode == MODE_GAMES_STREAMS) {
+					sf.key.preventDefault();
 
-				if (mode == MODE_GAMES_STREAMS) {
 					switchMode(MODE_GAMES);
 				}
 				break;
 			case sf.key.LEFT:
-				if (mode != MODE_GO) {
-					if (cursorX > 0) {
-						removeFocus();
-						cursorX--;
-						addFocus();
-					}
+				if (cursorX > 0) {
+					moveTableFocus(cursorX - 1, cursorY);
 				}
 				break;
 			case sf.key.RIGHT:
-				if (mode != MODE_GO) {
-					if (cursorX < getCellsCount(cursorY) - 1) {
-						removeFocus();
-						cursorX++;
-						addFocus();
-					}
+				if (cursorX < getCellsCount(cursorY) - 1) {
+					moveTableFocus(cursorX + 1, cursorY);
 				}
 				break;
 			case sf.key.UP:
-				if (mode != MODE_GO) {
-					if (cursorY > 0) {
-						removeFocus();
-						cursorY--;
-						addFocus();
-					}
-				}
-				else {
-					cursorY = 0;
-					refreshInputFocus();
+				if (cursorY > 0) {
+					moveTableFocus(cursorX, cursorY - 1);
 				}
 				break;
 			case sf.key.DOWN:
-				if (mode != MODE_GO) {
-					if (cursorY < getRowsCount() - 1
-							&& cursorX < getCellsCount(cursorY + 1)) {
-						removeFocus();
-						cursorY++;
-						addFocus();
-					}
-				}
-				else {
-					cursorY = 1;
-					refreshInputFocus();
+				if (cursorY < getRowsCount() - 1 && cursorX < getCellsCount(cursorY + 1)) {
+					moveTableFocus(cursorX, cursorY + 1);
 				}
 				break;
 			case sf.key.ENTER:
-				if (mode == MODE_GO) {
-					if (cursorY == 0) {
-						var ime = new IMEShell_Common();
-						ime.inputboxID = 'streamname_input';
-						ime.inputTitle = 'Channel name';
-						ime.setOnCompleteFunc = function(string) {};
-						ime.onShow();
-					}
-					else {
-						selectedChannel = $('#streamname_input').val();
-						openStream();
-					}
-				}
-				else if (mode == MODE_GAMES) {
+				if (self.mode == MODE_GAMES) {
 					gameSelected = $('#cell_' + cursorY + '_' + cursorX).attr('data-channelname');
-					mode = MODE_GAMES_STREAMS;
-					refresh();
+					switchMode(MODE_GAMES_STREAMS);
 				}
 				else {
-					selectedChannel = $('#cell_' + cursorY + '_' + cursorX).attr('data-channelname');
-					openStream();
+					Nav.openStream($('#cell_' + cursorY + '_' + cursorX).attr('data-channelname'));
 				}
 				break;
 			case sf.key.RED:
-				switchMode(MODE_ALL);
-				break;
 			case sf.key.GREEN:
-				switchMode(MODE_GAMES);
+				Nav.openBrowser(keyCode);
 				break;
 			case sf.key.YELLOW:
-				switchMode(MODE_GO);
-				break;
-			case sf.key.BLUE:
-				refresh();
+				Nav.openChooser();
 				break;
 		}
 	};
@@ -174,7 +119,7 @@ var SceneSceneBrowser = function(options) {
 						rowIndex, 
 						columnIndex, 
 						stream.name, 
-						stream.thumbnail, 
+						stream.thumbnail,
 						stream.title, 
 						stream.displayName, 
 						stream.viewersAsString + ' ' + STR_VIEWER
@@ -191,14 +136,14 @@ var SceneSceneBrowser = function(options) {
 
 		itemsCount += result.length;
 		
-		showTable();
-		addFocus();
+		moveTableFocus(cursorX, cursorY);
 		loadingData = false;
 	}
 
-	function createCell(row_id, coloumn_id, data_name, thumbnail, title, info, info2, info_fill) {
-		return $('<td id="cell_' + row_id + '_' + coloumn_id + '" class="stream_cell" data-channelname="' + data_name + '"></td>')
-			.html('<img id="thumbnail_' + row_id + '_' + coloumn_id + '" class="stream_thumbnail" src="' + thumbnail + '"/> \
+	function createCell(row_id, column_id, data_name, thumbnail, title, info, info2) {
+		var cellClass = (self.mode == MODE_GAMES) ? 'game' : 'stream';
+		return $('<td id="cell_' + row_id + '_' + column_id + '" class="stream_cell '+cellClass+'" data-channelname="' + data_name + '"></td>')
+			.html('<img id="thumbnail_' + row_id + '_' + column_id + '" class="stream_thumbnail '+cellClass+'" src="'+thumbnail+'"/> \
 				<div class="stream_text"> \
 				<div class="stream_title">' + title + '</div> \
 				<div class="stream_info">' + info + '</div> \
@@ -207,7 +152,38 @@ var SceneSceneBrowser = function(options) {
 	}
 
 	function createCellEmpty() {
-		return $('<td class="stream_cell"></td>').html('');
+		var cellClass = (self.mode == MODE_GAMES) ? 'game' : 'stream';
+		return $('<td class="stream_cell '+cellClass+'"></td>').html('');
+	}
+
+	function moveTableFocus(newCursorX, newCursorY) {
+		$('#thumbnail_' + cursorY + '_' + cursorX).removeClass('stream_thumbnail_focused');
+		
+		cursorX = newCursorX;
+		cursorY = newCursorY;
+		
+		$('#thumbnail_' + cursorY + '_' + cursorX).addClass('stream_thumbnail_focused');
+		ScrollHelper.scrollVerticalToElementById('thumbnail_' + cursorY + '_' + cursorX, 0);
+		
+		if (!dataEnded && (cursorY + 5 > itemsCount / COLUMN_COUNT)) {
+			loadData();
+		}
+	}
+
+	function switchMode(newMode) {
+		self.mode = newMode;
+
+		clean();
+		loadData();
+	}
+
+	function clean() {
+		$(window).scrollTop(0);
+		$('#stream_table').empty();
+		itemsCount = 0;
+		cursorX = 0;
+		cursorY = 0;
+		dataEnded = false;
 	}
 
 	function loadData() {
@@ -217,24 +193,24 @@ var SceneSceneBrowser = function(options) {
 		}
 		loadingData = true;
 		
-		if (mode == MODE_GAMES) {
+		if (self.mode == MODE_GAMES) {
 			Twitch.getGames(
 				itemsCount, 
 				PAGE_SIZE, 
 				loadDataSuccess,
 				function() {
-					showDialog("Error: Unable to retrieve stream list.");
+					Status.showMessage("Error: Unable to retrieve stream list.");
 				}
 			);
 		}
-		else if (mode == MODE_GAMES_STREAMS) {
+		else if (self.mode == MODE_GAMES_STREAMS) {
 			Twitch.getStreamsForGame(
 				gameSelected,
 				itemsCount, 
 				PAGE_SIZE, 
 				loadDataSuccess,
 				function() {
-					showDialog("Error: Unable to retrieve stream list.");
+					Status.showMessage("Error: Unable to retrieve stream list.");
 				}
 			);
 		}
@@ -244,138 +220,22 @@ var SceneSceneBrowser = function(options) {
 				PAGE_SIZE, 
 				loadDataSuccess,
 				function() {
-					showDialog("Error: Unable to retrieve stream list.");
+					Status.showMessage("Error: Unable to retrieve stream list.");
 				}
 			);
 		}
 	}
 
-	function showDialog(title) {
-		Status.showMessage(title);
-	}
-
-	function showThrobber() {
-		$("#streamname_frame").hide();
-	}
-
-	function showTable() {
-		$("#streamname_frame").hide();
-		$("#stream_table").show();
-
-		ScrollHelper.scrollVerticalToElementById('thumbnail_' + cursorY + '_' + cursorX, 0);
-	}
-
-	function showInput() {
-		$("#stream_table").hide();
-		$("#streamname_frame").show();
-	}
-
-	function switchMode(newMode) {
-		if (mode != newMode) {
-			mode = newMode;
-
-			$("#tip_icon_channels").removeClass('tip_icon_active');
-			$("#tip_icon_games").removeClass('tip_icon_active');
-			$("#tip_icon_open").removeClass('tip_icon_active');
-			$("#tip_icon_refresh").removeClass('tip_icon_active');
-			
-			if (mode == MODE_ALL)
-			{
-				$("#tip_icon_channels").addClass('tip_icon_active');
-				refresh();
-			}
-			else if (mode == MODE_GAMES)
-			{
-				$("#tip_icon_games").addClass('tip_icon_active');
-				refresh();
-			}
-			else if (mode == MODE_GAMES_STREAMS)
-			{
-				$("#tip_icon_games").addClass('tip_icon_active');
-				refresh();
-			}
-			else if (mode == MODE_GO)
-			{
-				$("#tip_icon_open").addClass('tip_icon_active');
-				clean();
-				showInput();
-				refreshInputFocus();
-			}
-		}
-		else {
-			refresh();
-		}
-	}
-
-	function clean() {
-		$('#stream_table').empty();
-		itemsCount = 0;
-		cursorX = 0;
-		cursorY = 0;
-		dataEnded = false;
-	}
-
-	function refresh() {
-		if (mode != MODE_GO) {
-			clean();
-			
-			loadData();
-		}
-	}
-
-	function removeFocus() {
-		$('#thumbnail_' + cursorY + '_' + cursorX).removeClass('stream_thumbnail_focused');
-	}
-
-	function addFocus() {
-		if (cursorY + 5 > itemsCount / COLUMN_COUNT
-				&& !dataEnded) {
-			loadData();
-		}
-		
-		$('#thumbnail_' + cursorY + '_' + cursorX).addClass('stream_thumbnail_focused');
-		
-		ScrollHelper.scrollVerticalToElementById('thumbnail_' + cursorY + '_' + cursorX, 0);
-	}
-
 	function getCellsCount(posY) {
-		return Math.min(
-				COLUMN_COUNT,
-				itemsCount - posY * COLUMN_COUNT);	
+		return Math.min(COLUMN_COUNT, itemsCount - posY * COLUMN_COUNT);
 	}
 
 	function getRowsCount() {
 		var count = itemsCount / COLUMN_COUNT;
-		if (itemsCount % COLUMN_COUNT > 0)
-		{
+		if (itemsCount % COLUMN_COUNT > 0) {
 			count++;
 		}
 		
 		return count;
-	}
-
-	function refreshInputFocus() {
-		$('#streamname_input').removeClass('channelname');
-		$('#streamname_input').removeClass('channelname_focused');
-		$('#streamname_button').removeClass('button_go');
-		$('#streamname_button').removeClass('button_go_focused');
-		
-		if (cursorY == 0)
-		{
-			$('#streamname_input').addClass('channelname_focused');
-			$('#streamname_button').addClass('button_go');
-		}
-		else
-		{
-			$('#streamname_input').addClass('channelname');
-			$('#streamname_button').addClass('button_go_focused');
-		}
-	}
-
-	function openStream() {
-		$(window).scrollTop(0);
-		sf.scene.show('SceneChannel');
-		sf.scene.hide('SceneBrowser');
-		sf.scene.focus('SceneChannel');
 	}
 };

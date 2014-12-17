@@ -1,55 +1,25 @@
-#SceneSceneBrowser{
-	position : absolute;
-	left : 0px;
-	top : 0px;
-	width : 1280px;
-	height : 720px;
-
-	background: none;
-	background-color: #090909;
-}
-
-div.tip_icon {
-	width: 42px;
-	height: 42px;
-	margin-right: 4px;
-	display: inline-block;
-	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
-	color: white;
-	font-size: 22px;
-	text-align: center;
-	vertical-align: middle;
-	line-height: 42px;
-}
-
-div.tip_icon_active {
-	outline: 1px solid white;
-	outline-offset: 2px;
-}
-
-div.tip_label {
-	width: 86px;
-	height: 42px;
-	margin-right: 32px;
-	display: inline-block;
-	color: white;
-	font-size: 20px;
-	vertical-align: middle;
-	line-height: 42px;
-}
-
 td.stream_cell {
 	padding: 6px;
 	position: relative;
 	
-	width: 304px;
-	min-height: 171px;
+	width: 300px;
+	height: 169px;
+}
+
+td.game.stream_cell {
+	height: 420px;
 }
 
 img.stream_thumbnail {
 	padding: 3px;
-	width: 304px;
-	min-height: 171px;
+	width: 300px;
+	height: 169px;
+	background-image: url('images/404_game.jpg');
+}
+
+img.game.stream_thumbnail {
+	height: 420px;
+	background-image: url('images/404_stream.jpg');
 }
 
 img.stream_thumbnail_focused {
@@ -59,7 +29,7 @@ img.stream_thumbnail_focused {
 
 div.stream_text {
 	position: absolute;
-	left: 2px;
+	left: 3px;
 	bottom: 6px;
 	background-color: rgba(0, 0, 0, 0.5);
 
@@ -90,66 +60,4 @@ div.stream_info {
 	color: rgba(255, 255, 255, 0.70);
 	font-weight: 100;
 	font-size: 140%;
-}
-
-div.openchannel {
-	width: 70%;
-	margin-top: 23%;
-	margin-left: 15%;
-}
-
-input.channelname {
-	width: 100%;
-	height: 80px;
-	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
-	color: black;
-	font-weight: 100;
-	font-size: 200%;
-	text-align: center;
-	vertical-align: middle;
-	background-color: rgba(255, 255, 255, 0.8);
-}
-
-input.channelname_focused {
-	width: 100%;
-	height: 80px;
-	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.45);
-	color: black;
-	font-weight: 100;
-	font-size: 200%;
-	text-align: center;
-	vertical-align: middle;
-	background-color: rgba(255, 255, 255, 1.0);
-}
-
-div.button_go {
-	width: 18%;
-	height: 90px;
-	margin-top: 2%;
-	margin-left: 41%;
-	padding-top: 0.5%;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
-	color: white;
-	font-weight: 100;
-	font-size: 170%;
-	text-align: center;
-	vertical-align: middle;
-	line-height: 90px;
-	background-color: #6441a5;
-}
-
-div.button_go_focused {
-	width: 18%;
-	height: 90px;
-	margin-top: 2%;
-	margin-left: 41%;
-	padding-top: 0.5%;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.45);
-	color: white;
-	font-weight: 100;
-	font-size: 170%;
-	text-align: center;
-	vertical-align: middle;
-	line-height: 90px;
-	background-color: #7f53cf;
 }

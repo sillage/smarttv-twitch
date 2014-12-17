@@ -1,10 +1,10 @@
 var SceneSceneChannel = function(options) { 
 	'use strict';
 
+	var self = this;
+	
 	var QualityAuto = "Auto";
 
-	var selectedChannel;
-	
 	var quality = "Source";
 	var qualityPlaying = quality;
 	var qualityPlayingIndex = 1;
@@ -14,6 +14,8 @@ var SceneSceneChannel = function(options) {
 	var tokenResponse;
 	var streamInfoTimer;
 
+	this.channel = '';
+	
 	this.initialize = function() {
 		initLanguage();
 	};
@@ -23,11 +25,12 @@ var SceneSceneChannel = function(options) {
 	}
 
 	this.handleHide = function() {
+		Player.stop();
 		window.clearInterval(streamInfoTimer);
 	};
 
 	this.handleShow = function(data) {
-		sf.service.setVolumeControl(true);
+		//sf.service.setVolumeControl(true);
 	};
 
 	this.handleBlur = function() {
@@ -37,10 +40,8 @@ var SceneSceneChannel = function(options) {
 	this.handleFocus = function(data) {
 		sf.service.setScreenSaver(true, 100000);
 
-		selectedChannel = sf.scene.get('SceneBrowser').getSelectedChannel();
-
 		hidePanel();
-		$('#stream_info_name').text(selectedChannel);
+		$('#stream_info_name').text(self.channel);
 		$("#stream_info_title").text("");
 		$("#stream_info_viewer").text("");
 		$("#stream_info_icon").attr("src", "");
@@ -48,7 +49,7 @@ var SceneSceneChannel = function(options) {
 		var lastStreamTitle = '';
 		var updateStreamInfo = function(shutdownOnError) {
 			Twitch.getChannelInfo(
-				selectedChannel, 
+				self.channel, 
 				function (result) {
 					if (lastStreamTitle !== result.title) {
 						lastStreamTitle = result.title;
@@ -74,12 +75,12 @@ var SceneSceneChannel = function(options) {
 		tokenResponse = null;
 
 		Twitch.getChannelToken(
-			selectedChannel, 
+			self.channel, 
 			function(newTokenResponse) {
 				tokenResponse = newTokenResponse;
 			
 				Twitch.getChannelQualities(
-					selectedChannel, 
+					self.channel, 
 					tokenResponse, 
 					function(newQualities) {
 						qualities = newQualities;
@@ -141,7 +142,7 @@ var SceneSceneChannel = function(options) {
 	};
 
 	function qualityChanged() {
-		var playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + selectedChannel + '.m3u8?type=any&sig=' + tokenResponse.sig + '&token=' + escape(tokenResponse.token);
+		var playingUrl = 'http://usher.twitch.tv/api/channel/hls/' + self.channel + '.m3u8?type=any&sig=' + tokenResponse.sig + '&token=' + escape(tokenResponse.token);
 
 		qualityIndex = 0;
 		for (var i = 0; i < qualities.length; i++) {
@@ -209,8 +210,6 @@ var SceneSceneChannel = function(options) {
 	function shutdownStream() {
 		Player.stop();
 		
-		sf.scene.show('SceneBrowser');
-		sf.scene.hide('SceneChannel');
-		sf.scene.focus('SceneBrowser');
+		Nav.back();
 	}
 };

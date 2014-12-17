@@ -1,6 +1,6 @@
 {
  "files": [],
- "scenes": ["SceneChannel", "SceneBrowser"],
+ "scenes": ["SceneChannel", "SceneBrowser", "SceneChooser"],
  "theme": "base",
  "modules": ["ime"],
  "languages" : ["en",  "de", "ru", "es", "pl"]

@@ -4,19 +4,36 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<script type="text/javascript" src="$MANAGER_WIDGET/Common/af/2.0.0/loader.js"></script>
 		<link rel="stylesheet" type="text/css" href="app/stylesheets/Main.css">
+		
 	</head>
 	<body>
 		<div id="throbber">
 			<div class="spinner" style="display: inline-block;"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		</div>
 		<div id="message">Loading...</div>
+
+		<div id="tip_menu" style="opacity: 0.0;">
+			<img style="float: left; width: 5%; padding: 1%;" src="images/twitchlogo.png">
+
+			<div style="float: right; padding: 1%;">
+				<div id="tip_icon_channels" class="tip_icon" style="background-color: #ff3333">A</div>
+				<div class="tip_label label_channels">STR_CHANNELS</div>
+				<div id="tip_icon_games"  class="tip_icon" style="background-color: #55d459">B</div>
+				<div class="tip_label label_games">STR_GAMES</div>
+				<div id="tip_icon_open"  class="tip_icon" style="background-color: #eded00">C</div>
+				<div class="tip_label label_open">STR_OPEN</div>
+			</div>
+		</div>
 		
 		<object id="pluginObjectPlayer" border="0" classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
 
+		<script type="text/javascript" src="$MANAGER_WIDGET/Common/webapi/1.0/deviceapis.js"></script>
+		<script type="text/javascript" src="$MANAGER_WIDGET/Common/af/2.0.0/sf.min.js"></script>
 		<script type='text/javascript' src='$MANAGER_WIDGET/Common/IME_XT9/ime.js'></script>
 		<script type='text/javascript' src='$MANAGER_WIDGET/Common/IME_XT9/inputCommon/ime_input.js'></script>
-
+		
 		<script type='text/javascript' src="app/js/jquery.min.js"></script>
+		<script type='text/javascript' src="app/js/nav.js"></script>
 		<script type='text/javascript' src="app/js/util.js"></script>
 		<script type='text/javascript' src="app/js/status.js"></script>
 		<script type='text/javascript' src="app/js/player.js"></script>
