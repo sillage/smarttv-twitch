@@ -1,7 +1,5 @@
 function onStart () {
 	setTimeout(function lazyStart() {
-		sf.service.setVolumeControl(true);
-
 		Status.init('#throbber', '#message');
 		Status.clearMessage();
 

@@ -31,7 +31,7 @@ var SceneSceneBrowser = function(options) {
 	};
 
 	this.handleShow = function(data) {
-		//sf.service.setVolumeControl(true);
+		sf.service.setVolumeControl(true);
 	};
 
 	this.handleHide = function() {
