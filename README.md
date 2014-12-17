@@ -19,7 +19,7 @@ This fork currently features:
 * Enabled mouse and smart remote integration (currently only for keyboard input and as a simple 'pointer')
 * Stream list not does not clean itself for a brief moment on loading new page, just the scrolling is paused a bit util more streams are loaded.
 * Removed static sleep (2s) from the stream loading code and replaced it with css improvements so list loading will seem to load faster
-* Blue button (D) (refresh) is now deprecated, because refresh can be initiated by pressing the current view button again (ex. list of streams (red) can be refreshed by pressing red button and list of games can be refreshed by pressing yellow button)
+* Blue button (D) (refresh) is now removed, because refresh can be initiated by pressing the current view button again (ex. list of streams (red) can be refreshed by pressing red button and list of games can be refreshed by pressing yellow button)
 
 [Stream Channel]
 * Defaults to "Source" resolution
