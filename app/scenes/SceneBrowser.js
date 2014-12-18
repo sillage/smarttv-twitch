@@ -26,17 +26,13 @@ var SceneSceneBrowser = function(options) {
 	  return selectedChannel;
 	};
 
-	this.initialize = function() {
-		//switchMode(MODE_ALL);
-	};
+	this.initialize = function() { };
 
 	this.handleShow = function(data) {
 		sf.service.setVolumeControl(true);
 	};
 
-	this.handleHide = function() {
-		//clean();
-	};
+	this.handleHide = function() { };
 
 	this.handleFocus = function() {
 		switchMode(self.mode);

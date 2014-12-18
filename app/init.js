@@ -1,15 +1,13 @@
 function onStart () {
+	Status.init('#throbber', '#message');
+
 	setTimeout(function lazyStart() {
-		Status.init('#throbber', '#message');
 		Status.clearMessage();
 
 		Status.signalStart();
 		try {
 			initPlayer();
 			initLanguage();
-
-			Ajax.onRequestStarted = function() { Status.signalStart(); };
-			Ajax.onRequestEnded = function() { Status.signalEnd(); };
 
 			Nav.openBrowser(Nav.BROWSER_MODE_ALL);
 		}

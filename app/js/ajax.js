@@ -30,18 +30,28 @@ var Ajax = new function() {
 				xhr.send(null);
 			} else {
 				error('timeout');
+				
+				if (!stealth) {
+					Status.signalEnd();
+				}
 			}
 		};
 
 		if (!stealth) {
-			xhr.onloadstart = function() { Ajax.onRequestStarted(); };
-			xhr.onloadend = function() { Ajax.onRequestEnded(); };
+			xhr.onloadstart = function() { Status.signalStart(); };
+			
+			// https://bugs.webkit.org/show_bug.cgi?id=40952
+			// xhr.onloadend = function() { Status.signalEnd(); };
+
+			xhr.onload = function() { Status.signalEnd(); };
+			xhr.onerror = function() { Status.signalEnd(); };
+			xhr.onabort = function() { Status.signalEnd(); };
 		}
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != null) { 
 				if (!stealth) {
-					Ajax.onRequestStarted();
+					Status.signalStart();
 				}
 				try {
 					var response = xhr.responseText;
@@ -51,9 +61,9 @@ var Ajax = new function() {
 
 					success(response);
 				}
-				finally {
+				finally { 
 					if (!stealth) {
-						Ajax.onRequestEnded();
+						Status.signalEnd();
 					}
 				}
 			}
@@ -63,7 +73,4 @@ var Ajax = new function() {
 		xhr.timeout = timeout;
 		xhr.send(null);
 	}
-
-	this.onRequestStarted = function(requests) {};
-	this.onRequestEnded = function(requests) {};
 };

@@ -5,9 +5,9 @@ var SceneSceneChannel = function(options) {
 	
 	var QualityAuto = "Auto";
 
-	var quality = "Source";
+	var quality = "High";
 	var qualityPlaying = quality;
-	var qualityPlayingIndex = 1;
+	var qualityPlayingIndex = 2;
 	var qualityIndex;
 	var qualities;
 

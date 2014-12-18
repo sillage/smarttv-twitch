@@ -18,12 +18,15 @@ var Status = new function() {
 		if (++counter > 0) {
 			setThrobberVisible(true);
 		}
+		
+		//alert('counter/signalStart: ' + counter);
 	};
 
 	this.signalEnd = function() {
-		if (--counter === 0) {
+		if (--counter == 0) {
 			setThrobberVisible(false);
 		}
+		//alert('counter/signalEnd: ' + counter);
 	};
 	
 	function setThrobberVisible(visible) {
