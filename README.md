@@ -33,3 +33,10 @@ TODO
 * Support mouse/smart remote in the whole application
 * Complete the code cleaning/refactoring
 * After all that is done try to make some sane pull requests to the original forked source tree
+
+INSTALL
+=============
+Enable develop mode in your TV, and target it to:
+(current hosted version (commit id): 1427070b10)
+
+<a href="http://37.187.19.70/">37.187.19.70</a>
