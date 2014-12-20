@@ -22,7 +22,6 @@ This fork currently features:
 * Blue button (D) (refresh) is now deprecated, because refresh can be initiated by pressing the current view button again (ex. list of streams (red) can be refreshed by pressing red button and list of games can be refreshed by pressing yellow button)
 
 [Stream Channel]
-* Defaults to "Source" resolution
 * Stream quality chooser now grays out the quality not yet applied
 * Stream info is partrially transparent
 * You can see stream title on stream start and every time the title changes (it persists 6 seconds)
@@ -31,7 +30,6 @@ Tested on Samsung H6400, feedback highly appreciated
 
 TODO
 =============
-* Focused elements in Browser sometimes dont show part of the border (css)
 * Support mouse/smart remote in the whole application
 * Complete the code cleaning/refactoring
 * After all that is done try to make some sane pull requests to the original forked source tree
