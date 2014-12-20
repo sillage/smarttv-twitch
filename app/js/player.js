@@ -9,6 +9,12 @@ var Player = new function() {
 	var retryCount = 0;
 	var maxRetries = 3;
 
+	/**
+	 * Initializes the player component using, the element with given ID.
+	 * Switches Player to fullscren mode and binds most events.
+	 *
+	 * @param id the id of the player component
+	 */
 	this.init = function(id) {
 		player = document.getElementById(id);
 		// 960x540 means maximum resolution of the display
@@ -67,7 +73,11 @@ var Player = new function() {
 			self.onBufferingProgress(progress);
 		};
 	};
-	
+
+	/**
+	 * Begins playing the specified source url at fullscreen. 
+	 * If there is some other playback in progress it is automatically stopped.
+	 */
 	this.play = function(source) {
 		self.stop();
 
@@ -76,7 +86,10 @@ var Player = new function() {
 		player.Play(url);
 		player.SetDisplayArea(0, 0, 960, 540);
 	}
-	
+
+	/**
+	 * Stops current playback if there is any
+	 */
 	this.stop = function() {
 		alert('Player.stop()');
 

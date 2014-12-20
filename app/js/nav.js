@@ -15,12 +15,25 @@ var Nav = new function() {
 	var last;
 	var current;
 
+	/**
+	 * Initializes all scenes
+	 */
 	this.init = function() {
 		sf.scene.get(BROWSER);
 		sf.scene.get(CHOOSER);
 		sf.scene.get(CHANNEL);
 	};
 	
+	/**
+	 * Sets active channel and opens Channel scene
+	  *
+	 * If some other scene is already shown, it will show the new scene, hide the current one and then focus the new one.
+	 * if it is shown already it'll only casue focus via .handleFocus()
+	 *
+	 * @param channel name
+	 *
+	 * @return true if scene was switched, false otherwise
+	 */
 	this.openStream = function(channel) {
 		if (channel !== undefined) {
 			sf.scene.get(CHANNEL).channel = channel;
@@ -29,6 +42,16 @@ var Nav = new function() {
 		open(CHANNEL);
 	};
 
+	/**
+	 * Sets active browser mode and opens Browser scene
+	 *
+	 * If some other scene is already shown, it will show the new scene, hide the current one and then focus the new one.
+	 * if it is shown already it'll only casue focus via .handleFocus()
+	 *
+	 * @param mode of the browser
+	 *
+	 * @return true if scene was switched, false otherwise
+	 */
 	this.openBrowser = function(mode) {
 		var browserScene = sf.scene.get(BROWSER);
 		if (mode !== undefined) {
@@ -48,21 +71,44 @@ var Nav = new function() {
 			break;
 		}
 
-		open(BROWSER);
+		return open(BROWSER);
 	};
 
+	/**
+	 * Opens Chooser scene
+	 *
+	 * @return true if scene was switched, false otherwise
+	 */
 	this.openChooser = function() {
 		$("#tip_icon_channels").removeClass('tip_icon_active');
 		$("#tip_icon_games").removeClass('tip_icon_active');
 		$("#tip_icon_open").removeClass('tip_icon_active').addClass('tip_icon_active');
 
-		open(CHOOSER);
+		return open(CHOOSER);
 	};
 
+	/**
+	 * Opens scene that was show last (before the current one)
+	 *
+	 * If some other scene is already shown, it will show the new scene, hide the current one and then focus the new one.
+	 * if it is shown already it'll only casue focus via .handleFocus()
+	 *
+	 * @return true if scene was switched, false otherwise
+	 */
 	this.back = function() {
-		open(last);
+		return open(last);
 	};
 	
+	/**
+	 * Opens scene by sceneName
+	 *
+	 * If some other scene is already shown, it will show the new scene, hide the current one and then focus the new one.
+	 * if it is shown already it'll only casue focus via .handleFocus()
+	 *
+	 * @param sceneName
+	 *
+	 * @return true if scene was switched, false otherwise
+	 */
 	function open(sceneName) {
 		if (current != sceneName) {
 			$("#tip_menu").fadeTo(800, (sceneName == CHANNEL) ? 0 : 0.7);

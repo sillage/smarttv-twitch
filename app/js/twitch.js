@@ -4,10 +4,49 @@ var Twitch = new function() {
 	var MODE_GAME = 0;
 	var MODE_STREAM = 1;
 
+	/**
+	 * Fetches limit streams starting at offset from all available streams.
+	 *
+	 * Result will be an array of:  {
+	 * 		name: channel name (to be used as stream identifier),
+	 * 		displayName: channel display name,
+	 * 		title: cannel title,
+	 * 		viewers: viewers as integer,
+	 * 		viewersAsString: viewers as formatted string,
+	 * 		logo: image url with channel logo,
+	 * 		thumbnail: image url with channel thumbnail,
+	 * 		preview: image url with channel preview
+	 * 	}
+	 *
+	 * @param offset first stream to fetch
+	 * @param limit max streams to fetch from offset
+	 * @param success function to which results will be passed
+	 * @param error function which will be fired on any error
+	 */
 	this.getAllStreams = function(offset, limit, success, error) {
 		Twitch.getStreamsForGame(undefined, offset, limit, success, error);
 	};
 
+	/**
+	 * Fetches limit streams starting at offset from all available streams for a specific game.
+	 *
+	 * Result will be an array of:  {
+	 * 		name: channel name (to be used as stream identifier),
+	 * 		displayName: channel display name,
+	 * 		title: cannel title,
+	 * 		viewers: viewers as integer,
+	 * 		viewersAsString: viewers as formatted string,
+	 * 		logo: image url with channel logo,
+	 * 		thumbnail: image url with channel thumbnail,
+	 * 		preview: image url with channel preview
+	 * 	}
+	 *
+	 * @param game game identifier, may be undefined in which case all streams will be fetched
+	 * @param offset first stream to fetch
+	 * @param limit max streams to fetch from offset
+	 * @param success function to which results will be passed
+	 * @param error function which will be fired on any error
+	 */
 	this.getStreamsForGame = function(game, offset, limit, success, error) {
 		var url = 'https://api.twitch.tv/kraken/streams?limit=' + limit + '&offset=' + offset;
 		if (game !== undefined) {
@@ -27,6 +66,26 @@ var Twitch = new function() {
 		);
 	};
 
+	/**
+	 * Fetches limit games starting at offset from all available games.
+	 *
+	 * Result will be an array of:  {
+	 * 		name: game (to be used as game identifier),
+	 * 		displayName: game name (always same as name above),
+	 * 		title: always empty,
+	 * 		viewers: viewers as integer,
+	 * 		viewersAsString: viewers as formatted string,
+	 * 		logo: image url with game thumbnail,
+	 * 		thumbnail: image url with game thumbnail (same as logo above),
+	 * 		preview: image url with game preview
+	 * 	}
+	 *
+	 * @param game identifier, may be undefined in which case all streams will be fetched
+	 * @param offset first game to fetch
+	 * @param limit max games to fetch from offset
+	 * @param success function to which results will be passed
+	 * @param error function which will be fired on any error
+	 */
 	this.getGames = function(offset, limit, success, error) {
 		var url = 'https://api.twitch.tv/kraken/games/top?limit=' + limit + '&offset=' + offset;
 		Ajax.getJson(
@@ -74,7 +133,25 @@ var Twitch = new function() {
 			preview: node.game.box.large
 		};
 	}
-	
+
+	/**
+	 * Fetches info for specific channel/stream
+	 *
+	 * Result will be an object of:  {
+	 * 		name: channel name (to be used as stream identifier),
+	 * 		displayName: channel display name,
+	 * 		title: cannel title,
+	 * 		viewers: viewers as integer,
+	 * 		viewersAsString: viewers as formatted string,
+	 * 		logo: image url with channel logo,
+	 * 		thumbnail: image url with channel thumbnail,
+	 * 		preview: image url with channel preview
+	 * 	}
+	 *
+	 * @param channel name
+	 * @param success function to which results will be passed
+	 * @param error function which will be fired on any error
+	 */
 	this.getChannelInfo = function (channel, success, error) {
 		var url = 'https://api.twitch.tv/kraken/streams/' + channel;
 		Ajax.getJson(
@@ -117,11 +194,26 @@ var Twitch = new function() {
 		return x1 + x2;
 	}
 
+	/**
+	 * Feches the channel token, to be used to access channel video information
+	 *
+	 * @param channel name
+	 * @param success function to which results will be passed
+	 * @param error function which will be fired on any error
+	 */
 	this.getChannelToken = function (channel, success, error) {
 		var url = 'http://api.twitch.tv/api/channels/' + channel + '/access_token';
 		Ajax.getJson(url, success, error);
 	};
 	
+	/**
+	 * Feches the channel quality/video information, needs channel token to work
+	 *
+	 * @param channel name
+	 * @param token channel token, aquired from getChannelToken() function
+	 * @param success function to which results will be passed
+	 * @param error function which will be fired on any error
+	 */
 	this.getChannelQualities = function (channel, token, success, error) {
 		var url = 'http://usher.twitch.tv/api/channel/hls/' + channel + '.m3u8?type=any&sig=' + token.sig + '&token=' + escape(token.token) + '&allow_source=true';
 
