@@ -38,14 +38,22 @@ var Ajax = new function() {
 		};
 
 		if (!stealth) {
-			xhr.onloadstart = function() { Status.signalStart(); };
+			xhr.onloadstart = function() { 
+				alert('AJAXS('+retryCount+','+dataType+'): ' + url); 
+				Status.signalStart(); 
+			};
 			
 			// https://bugs.webkit.org/show_bug.cgi?id=40952
 			// xhr.onloadend = function() { Status.signalEnd(); };
 
-			xhr.onload = function() { Status.signalEnd(); };
-			xhr.onerror = function() { Status.signalEnd(); };
-			xhr.onabort = function() { Status.signalEnd(); };
+			var onloadend = function() {
+				alert('AJAXE('+retryCount+','+dataType+'): ' + url);
+				Status.signalEnd();
+			};
+			
+			xhr.onload = onloadend;
+			xhr.onerror = onloadend;
+			xhr.onabort = onloadend;
 		}
 
 		xhr.onreadystatechange = function() {

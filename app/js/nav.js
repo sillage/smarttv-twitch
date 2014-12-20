@@ -3,10 +3,10 @@ var Nav = new function() {
 
 	var self = this;
 	
-	this.BROWSER_MODE_ALL = sf.key.RED;
-	this.BROWSER_MODE_GAMES = sf.key.GREEN;
-	this.BROWSER_MODE_GAMES_STREAMS = 0;
-	this.BROWSER_MODE_GO = sf.key.YELLOW;
+	this.BROWSER_MODE_ALL = 0;
+	this.BROWSER_MODE_GAMES = 1;
+	this.BROWSER_MODE_GAMES_STREAMS = 2;
+	this.BROWSER_MODE_GO = 3;
 
 	var BROWSER = 'SceneBrowser';
 	var CHOOSER = 'SceneChooser';
@@ -15,6 +15,12 @@ var Nav = new function() {
 	var last;
 	var current;
 
+	this.init = function() {
+		sf.scene.get(BROWSER);
+		sf.scene.get(CHOOSER);
+		sf.scene.get(CHANNEL);
+	};
+	
 	this.openStream = function(channel) {
 		if (channel !== undefined) {
 			sf.scene.get(CHANNEL).channel = channel;
@@ -28,7 +34,7 @@ var Nav = new function() {
 		if (mode !== undefined) {
 			browserScene.mode = mode;
 		}
-		
+
 		$("#tip_icon_channels").removeClass('tip_icon_active');
 		$("#tip_icon_games").removeClass('tip_icon_active');
 		$("#tip_icon_open").removeClass('tip_icon_active');
@@ -59,7 +65,7 @@ var Nav = new function() {
 	
 	function open(sceneName) {
 		if (current != sceneName) {
-			$("#tip_menu").fadeTo(800, (sceneName == CHANNEL) ? 0.0 : 0.7);
+			$("#tip_menu").fadeTo(800, (sceneName == CHANNEL) ? 0 : 0.7);
 		
 			last = current;
 			current = sceneName;

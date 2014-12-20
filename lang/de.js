@@ -1,21 +1,23 @@
-alert("German (de) loaded");
-var STR_CHANNELS = "Kanäle";
-var STR_GAMES = "Spiele";
-var STR_OPEN = "Kanal öffnen";
-var STR_REFRESH = "Neu laden";
+var LanguageStrings = {
+	channels: "Kanäle",
+	games: "Spiele",
+	open: "Kanal öffnen",
+	open_placeholder: "Kanalnamen eingeben...",
+	refresh: "Neu laden",
+	quality: "Qualität",
+	retrying: "Versuch",
+	viewers: "Zuschauer",
+	buffering: "Puffer",
 
-var STR_PLACEHOLDER_OPEN = "Kanalnamen eingeben...";
-
-var STR_QUALITY = "Qualität";
-
-var STR_RETRYING = "Versuch"; 
-var STR_VIEWER = "Zuschauer";
-var STR_BUFFERING = "Puffer";
-
-
-var STR_ERROR_RENDER_SOURCE = "Format not supported :(";
-var STR_ERROR_RENDER_FIXED = "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.";
-var STR_ERROR_NETWORK_DISCONNECT= "Netzwerk nicht erreichbar.";
-var STR_ERROR_STREAM_NOT_FOUND = "Stream nicht gefunden.";
-var STR_ERROR_AUTHENTICATION_FAIL = "Authentifizierung fehlgeschlagen.";
-var STR_ERROR_CONNECTION_FAIL = "Verbindungsaufbau fehlgeschlagen.";
+	Error: {
+		no_streams: "Error: Unable to retrieve stream list.",
+		no_games: "Error: Unable to retrieve game list.",
+		no_game_streams: "Error: Unable to retrieve stream list for this game.",
+		render_source: "Format not supported, try High/Medium/Low qualities",
+		render_fixed: "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.",
+		network_disconnect: "Netzwerk nicht erreichbar.",
+		stream_not_found: "Stream nicht gefunden.",
+		authentication_fail: "Authentifizierung fehlgeschlagen.",
+		connection_fail: "Verbindungsaufbau fehlgeschlagen."
+	}
+};

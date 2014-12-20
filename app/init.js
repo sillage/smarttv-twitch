@@ -1,20 +1,23 @@
 function onStart () {
-	Status.init('#throbber', '#message');
+	$(document).ready(function() {
+		Nav.init();
+		Language.apply();
+		Status.init('#throbber', '#message');
 
-	setTimeout(function lazyStart() {
-		Status.clearMessage();
+		setTimeout(function lazyStart() {
+			Status.clearMessage();
 
-		Status.signalStart();
-		try {
-			initPlayer();
-			initLanguage();
+			Status.signalStart();
+			try {
+				initPlayer();
 
-			Nav.openBrowser(Nav.BROWSER_MODE_ALL);
-		}
-		finally {
-			Status.signalEnd();
-		}
-	}, 0);
+				Nav.openBrowser(Nav.BROWSER_MODE_ALL);
+			}
+			finally {
+				Status.signalEnd();
+			}
+		}, 0);
+	});
 
 	function initPlayer() {
 		Player.init('pluginObjectPlayer');
@@ -25,26 +28,26 @@ function onStart () {
 			var message = 'Unexpected error';
 			switch (status) {
 				case 'connection':
-					message = STR_ERROR_CONNECTION_FAIL;
+					message = LanguageStrings.Error.connection_fail;
 				break;
 				case 'network':
-					message = STR_ERROR_NETWORK_DISCONNECT;
+					message = LanguageStrings.Error.network_disconnect;
 				break;
 				case 'renderer':
 					if (quality == "High"
 						|| quality == "Medium"
 						|| quality == "Low") {
-						message = STR_ERROR_RENDER_FIXED;
+						message = LanguageStrings.Error.render_fixed;
 						}
 					else {
-						message = STR_ERROR_RENDER_SOURCE;
+						message = LanguageStrings.Error.render_source;
 					}
 				break;
 				case 'authentication':
-					message = STR_ERROR_AUTHENTICATION_FAIL;
+					message = LanguageStrings.Error.authentication_fail;
 				break;
 				case 'notfound':
-					message = STR_ERROR_STREAM_NOT_FOUND;
+					message = LanguageStrings.Error.stream_not_found;
 				break;
 			}
 
@@ -54,26 +57,22 @@ function onStart () {
 		Player.onCompleted = function() { 
 			Player.stop();
 
-			Nav.openBrowser();
+			Nav.back();
 		};
 
 		Player.onBufferingStarted = function () { 
 			Status.signalStart(); 
-			Status.showMessage(STR_BUFFERING + '...'); 
+			Status.showMessage(LanguageStrings.buffering + '...'); 
 		};
+		
 		Player.onBufferingProgress = function (percent) { 
-			Status.showMessage(STR_BUFFERING + ': ' + percent + '%'); 
+			Status.showMessage(LanguageStrings.buffering + ': ' + percent + '%'); 
 		};
+		
 		Player.onBufferingEnded = function () { 
 			Status.clearMessage(); 
 			Status.signalEnd(); 
 		};
-	}
-
-	function initLanguage() {
-			$('.label_channels').html(STR_CHANNELS);
-			$('.label_games').html(STR_GAMES);
-			$('.label_open').html(STR_OPEN);
 	}
 }
 

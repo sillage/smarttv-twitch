@@ -1,21 +1,23 @@
-alert("English (en) loaded");
-var STR_CHANNELS = "Channels";
-var STR_GAMES = "Games";
-var STR_OPEN = "Open";
-var STR_REFRESH = "Refresh";
+var LanguageStrings = {
+	channels: "Channels",
+	games: "Games",
+	open: "Open",
+	open_placeholder: "Enter channel name...",
+	refresh: "Refresh",
+	quality: "Quality",
+	retrying: "Retrying",
+	viewers: "Viewers",
+	buffering: "Buffering",
 
-var STR_PLACEHOLDER_OPEN = "Enter channel name...";
-
-var STR_QUALITY = "Quality";
-
-var STR_RETRYING = "Retrying";
-var STR_VIEWER = "Viewers";
-var STR_BUFFERING = "Buffering";
-
-
-var STR_ERROR_RENDER_SOURCE = "Format not supported :(";
-var STR_ERROR_RENDER_FIXED = "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.";
-var STR_ERROR_NETWORK_DISCONNECT= "Network disconnected.";
-var STR_ERROR_STREAM_NOT_FOUND = "Stream not found.";
-var STR_ERROR_AUTHENTICATION_FAIL = "Authentication failed.";
-var STR_ERROR_CONNECTION_FAIL = "Connection failed.";
+	Error: {
+		no_streams: "Error: Unable to retrieve stream list.",
+		no_games: "Error: Unable to retrieve game list.",
+		no_game_streams: "Error: Unable to retrieve stream list for this game.",
+		render_source: "Format not supported, try High/Medium/Low qualities",
+		render_fixed: "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.",
+		network_disconnect: "Network disconnected.",
+		stream_not_found: "Stream not found.",
+		authentication_fail: "Authentication failed.",
+		connection_fail: "Connection failed."
+	}
+};

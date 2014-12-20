@@ -9,8 +9,8 @@
 	background-color: #090909;
 }
 
-#stream_table {
-	padding-top: 6%;
+#SceneSceneBrowser {
+	overflow: hidden;
 }
 
 #SceneSceneChannel {

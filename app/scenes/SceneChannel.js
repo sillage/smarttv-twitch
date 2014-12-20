@@ -15,14 +15,10 @@ var SceneSceneChannel = function(options) {
 	var streamInfoTimer;
 
 	this.channel = '';
-	
-	this.initialize = function() {
-		initLanguage();
-	};
 
-	function initLanguage() {
-		$('#label_quality').html(STR_QUALITY);
-	}
+	this.initialize = function() { 
+		Language.apply();
+	};
 
 	this.handleHide = function() {
 		Player.stop();
@@ -57,7 +53,7 @@ var SceneSceneChannel = function(options) {
 					}
 					
 					$("#stream_info_title").text(result.title);
-					$("#stream_info_viewer").text(result.viewersAsString + ' ' + STR_VIEWER);
+					$("#stream_info_viewer").text(result.viewersAsString + ' ' + LanguageStrings.viewers);
 					$("#stream_info_icon").attr("src", result.logo);
 				},
 				function() {

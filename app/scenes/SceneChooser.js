@@ -4,17 +4,9 @@ var SceneSceneChooser = function(options) {
 	var cursorX = 0;
 	var cursorY = 0;
 
-	this.initialize = function() {
-		initLanguage();
+	this.initialize = function() { 
+		Language.apply();
 	};
-
-	function initLanguage() {
-		$('.label_channels').html(STR_CHANNELS);
-		$('.label_games').html(STR_GAMES);
-		$('.label_open').html(STR_OPEN);
-		$('.label_refresh').html(STR_REFRESH);
-		$('.label_placeholder_open').attr("placeholder", STR_PLACEHOLDER_OPEN);
-	}
 
 	this.handleShow = function(data) {
 		sf.service.setVolumeControl(true);
@@ -51,8 +43,10 @@ var SceneSceneChooser = function(options) {
 				}
 				break;
 			case sf.key.RED:
+				Nav.openBrowser(Nav.BROWSER_MODE_ALL);
+				break;
 			case sf.key.GREEN:
-				Nav.openBrowser(keyCode);
+				Nav.openBrowser(Nav.BROWSER_MODE_GAMES);
 				break;
 			case sf.key.YELLOW:
 				$('#streamname_input').val('');

@@ -20,7 +20,7 @@ var Twitch = new function() {
 					success(extractGameOrStreamList(response, MODE_STREAM)); 
 				}
 				catch (e) {
-					error('unknown error');
+					error('unknown ' + e);
 				}
 			}, 
 			error
@@ -36,7 +36,7 @@ var Twitch = new function() {
 					success(extractGameOrStreamList(response, MODE_GAME)); 
 				}
 				catch (e) {
-					error('unknown error');
+					error('unknown ' + e);
 				}
 			}, 
 			error
@@ -84,7 +84,7 @@ var Twitch = new function() {
 					success(extractStreamInfo(response.stream));
 				}
 				catch (e) {
-					error('unknown error');
+					error('unknown ' + e);
 				}
 			}, 
 			error, 
@@ -132,7 +132,7 @@ var Twitch = new function() {
 					success(extractQualities(response, status, xhr));
 				}
 				catch (e) {
-					error('unknown error');
+					error('unknown ' + e);
 				}
 			}, 
 			error

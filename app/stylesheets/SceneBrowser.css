@@ -11,15 +11,15 @@ td.game.stream_cell {
 }
 
 img.stream_thumbnail {
-	padding: 3px;
+	padding: 3px; 
 	width: 300px;
 	height: 169px;
-	background-image: url('images/404_game.jpg');
+	background-image: url('/images/404_game.jpg');
 }
 
 img.game.stream_thumbnail {
 	height: 420px;
-	background-image: url('images/404_stream.jpg');
+	background-image: url('/images/404_stream.jpg');
 }
 
 img.stream_thumbnail_focused {
@@ -30,7 +30,7 @@ img.stream_thumbnail_focused {
 div.stream_text {
 	position: absolute;
 	left: 3px;
-	bottom: 6px;
+	bottom: 6px; 
 	background-color: rgba(0, 0, 0, 0.5);
 
 	padding: 4px;
@@ -51,7 +51,7 @@ div.stream_title {
 }
 
 div.stream_info {
-	padding-top: 0.5%;
+	padding-top: 3px;
 	width: 100%;
 	text-align: left;
 	white-space: nowrap;

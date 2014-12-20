@@ -6,14 +6,10 @@ var SceneSceneBrowser = function(options) {
 	var PAGE_SIZE = 32;
 	var COLUMN_COUNT = 4;
 
-	var MODE_ALL = sf.key.RED;
-	var MODE_GAMES = sf.key.GREEN;
-	var MODE_GAMES_STREAMS = 0;
-
 	var selectedChannel;
 	var gameSelected;
 
-	this.mode = MODE_ALL;
+	this.mode = Nav.BROWSER_MODE_ALL;
 	var itemsCount = 0;
 
 	var cursorX = 0;
@@ -26,7 +22,9 @@ var SceneSceneBrowser = function(options) {
 	  return selectedChannel;
 	};
 
-	this.initialize = function() { };
+	this.initialize = function() { 
+		Language.apply();
+	};
 
 	this.handleShow = function(data) {
 		sf.service.setVolumeControl(true);
@@ -47,10 +45,10 @@ var SceneSceneBrowser = function(options) {
 
 		switch (keyCode) {
 			case sf.key.RETURN:
-				if (self.mode == MODE_GAMES_STREAMS) {
+				if (self.mode == Nav.BROWSER_MODE_GAMES_STREAMS) {
 					sf.key.preventDefault();
 
-					switchMode(MODE_GAMES);
+					switchMode(Nav.BROWSER_MODE_GAMES);
 				}
 				break;
 			case sf.key.LEFT:
@@ -74,17 +72,19 @@ var SceneSceneBrowser = function(options) {
 				}
 				break;
 			case sf.key.ENTER:
-				if (self.mode == MODE_GAMES) {
+				if (self.mode == Nav.BROWSER_MODE_GAMES) {
 					gameSelected = $('#cell_' + cursorY + '_' + cursorX).attr('data-channelname');
-					switchMode(MODE_GAMES_STREAMS);
+					switchMode(Nav.BROWSER_MODE_GAMES_STREAMS);
 				}
 				else {
 					Nav.openStream($('#cell_' + cursorY + '_' + cursorX).attr('data-channelname'));
 				}
 				break;
 			case sf.key.RED:
+				Nav.openBrowser(Nav.BROWSER_MODE_ALL);
+				break;
 			case sf.key.GREEN:
-				Nav.openBrowser(keyCode);
+				Nav.openBrowser(Nav.BROWSER_MODE_GAMES);
 				break;
 			case sf.key.YELLOW:
 				Nav.openChooser();
@@ -118,7 +118,7 @@ var SceneSceneBrowser = function(options) {
 						stream.thumbnail,
 						stream.title, 
 						stream.displayName, 
-						stream.viewersAsString + ' ' + STR_VIEWER
+						stream.viewersAsString + ' ' + LanguageStrings.viewers
 					)
 				);
 			}
@@ -137,7 +137,7 @@ var SceneSceneBrowser = function(options) {
 	}
 
 	function createCell(row_id, column_id, data_name, thumbnail, title, info, info2) {
-		var cellClass = (self.mode == MODE_GAMES) ? 'game' : 'stream';
+		var cellClass = (self.mode == Nav.BROWSER_MODE_GAMES) ? 'game' : 'stream';
 		return $('<td id="cell_' + row_id + '_' + column_id + '" class="stream_cell '+cellClass+'" data-channelname="' + data_name + '"></td>')
 			.html('<img id="thumbnail_' + row_id + '_' + column_id + '" class="stream_thumbnail '+cellClass+'" src="'+thumbnail+'"/> \
 				<div class="stream_text"> \
@@ -148,7 +148,7 @@ var SceneSceneBrowser = function(options) {
 	}
 
 	function createCellEmpty() {
-		var cellClass = (self.mode == MODE_GAMES) ? 'game' : 'stream';
+		var cellClass = (self.mode == Nav.BROWSER_MODE_GAMES) ? 'game' : 'stream';
 		return $('<td class="stream_cell '+cellClass+'"></td>').html('');
 	}
 
@@ -158,9 +158,10 @@ var SceneSceneBrowser = function(options) {
 		cursorX = newCursorX;
 		cursorY = newCursorY;
 		
-		$('#thumbnail_' + cursorY + '_' + cursorX).addClass('stream_thumbnail_focused');
-		ScrollHelper.scrollVerticalToElementById('thumbnail_' + cursorY + '_' + cursorX, 0);
-		
+		var element = $('#thumbnail_' + cursorY + '_' + cursorX).addClass('stream_thumbnail_focused');
+		var tableElement = $('#stream_table');
+		tableElement.css({'marginTop': parseInt(tableElement.css('marginTop')) - element.offset().top + 90});
+
 		if (!dataEnded && (cursorY + 5 > itemsCount / COLUMN_COUNT)) {
 			loadData();
 		}
@@ -174,7 +175,7 @@ var SceneSceneBrowser = function(options) {
 	}
 
 	function clean() {
-		$(window).scrollTop(0);
+		$('#stream_table').css({'marginTop': 0});
 		$('#stream_table').empty();
 		itemsCount = 0;
 		cursorX = 0;
@@ -189,24 +190,26 @@ var SceneSceneBrowser = function(options) {
 		}
 		loadingData = true;
 		
-		if (self.mode == MODE_GAMES) {
+		if (self.mode == Nav.BROWSER_MODE_GAMES) {
 			Twitch.getGames(
 				itemsCount, 
 				PAGE_SIZE, 
 				loadDataSuccess,
 				function() {
-					Status.showMessage("Error: Unable to retrieve stream list.");
+					loadingData = false;
+					Status.showMessage(LanguageStrings.Error.no_games);
 				}
 			);
 		}
-		else if (self.mode == MODE_GAMES_STREAMS) {
+		else if (self.mode == Nav.BROWSER_MODE_GAMES_STREAMS) {
 			Twitch.getStreamsForGame(
 				gameSelected,
 				itemsCount, 
 				PAGE_SIZE, 
 				loadDataSuccess,
 				function() {
-					Status.showMessage("Error: Unable to retrieve stream list.");
+					loadingData = false;
+					Status.showMessage(LanguageStrings.Error.no_game_streams);
 				}
 			);
 		}
@@ -216,7 +219,8 @@ var SceneSceneBrowser = function(options) {
 				PAGE_SIZE, 
 				loadDataSuccess,
 				function() {
-					Status.showMessage("Error: Unable to retrieve stream list.");
+					loadingData = false;
+					Status.showMessage(LanguageStrings.Error.no_streams);
 				}
 			);
 		}
