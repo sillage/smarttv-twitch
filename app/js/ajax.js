@@ -78,6 +78,8 @@ var Ajax = new function() {
 		};
 
 		xhr.open('GET', url, true);
+		// https://github.com/justintv/Twitch-API#rate-limits
+		xhr.setRequestHeader("Client-ID", "5k0okpfgbdfizy7fsemlvv3waciwzwx");
 		xhr.timeout = timeout;
 		xhr.send(null);
 	}
