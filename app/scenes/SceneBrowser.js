@@ -126,6 +126,56 @@ var SceneSceneBrowser = function(options) {
 			for (; columnIndex < COLUMN_COUNT; columnIndex++) {
 				rowElement.append(createCellEmpty());
 			}
+		};
+	    xmlHttp.open("GET", theUrl, true);
+		xmlHttp.timeout = SceneSceneBrowser.loadingDataTimeout;
+		xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+	    xmlHttp.send(null);
+	}
+	catch (error)
+	{
+		SceneSceneBrowser.loadDataError();
+	}
+};
+
+SceneSceneBrowser.loadData = function()
+{
+	// Even though loading data after end is safe it is pointless and causes lag
+	if ((SceneSceneBrowser.itemsCount % SceneSceneBrowser.ColoumnsCount != 0) || SceneSceneBrowser.loadingData)
+	{
+		return;
+	}
+	
+	SceneSceneBrowser.loadingData = true;
+	SceneSceneBrowser.loadingDataTry = 0;
+	SceneSceneBrowser.loadingDataTimeout = 500;
+	
+	SceneSceneBrowser.loadDataRequest();
+};
+
+SceneSceneBrowser.showDialog = function(title)
+{
+	$("#streamname_frame").hide();
+	$("#stream_table").hide();
+	$("#dialog_loading_text").text(title);
+	$("#dialog_loading").show();
+};
+
+SceneSceneBrowser.showTable = function()
+{
+	$("#dialog_loading").hide();
+	$("#streamname_frame").hide();
+	$("#stream_table").show();
+    
+    ScrollHelper.scrollVerticalToElementById('thumbnail_' + SceneSceneBrowser.cursorY + '_' + SceneSceneBrowser.cursorX, 0);
+};
+
+SceneSceneBrowser.showInput = function()
+{
+	$("#dialog_loading").hide();
+	$("#stream_table").hide();
+	$("#streamname_frame").show();
+};
 
 			$('#stream_table').append(rowElement);
 		}

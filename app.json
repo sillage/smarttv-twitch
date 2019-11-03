@@ -3,5 +3,5 @@
  "scenes": ["SceneChannel", "SceneBrowser", "SceneChooser"],
  "theme": "base",
  "modules": ["ime"],
- "languages" : ["en",  "de", "ru", "es", "pl"]
+ "languages" : ["en",  "de", "ru", "es", "pt-br", "uk", "fr"]
 }

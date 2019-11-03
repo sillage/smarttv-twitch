@@ -168,6 +168,59 @@ var SceneSceneChannel = function(options) {
 		refreshQualityDisplay();
 		$("#scene_channel_panel").fadeTo(300, 0.9);
 	}
+	return x1 + x2;
+}
+
+SceneSceneChannel.updateStreamInfo = function()
+{
+	var xmlHttp = new XMLHttpRequest();
+	
+	xmlHttp.ontimeout = function()
+	{
+
+	};
+	xmlHttp.onreadystatechange = function()
+	{
+		if (xmlHttp.readyState === 4)
+		{ 
+			if (xmlHttp.status === 200)
+			{
+				try
+				{
+					var response = $.parseJSON(xmlHttp.responseText);
+					$("#stream_info_title").text(response.stream.channel.status);
+					$("#stream_info_viewer").text(addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+					$("#stream_info_icon").attr("src", response.stream.channel.logo);
+				}
+				catch (err)
+				{
+					
+				}
+				
+			}
+			else
+			{
+			}
+		}
+	};
+    xmlHttp.open("GET", 'https://api.twitch.tv/kraken/streams/' + SceneSceneBrowser.selectedChannel, true);
+	xmlHttp.timeout = 10000;
+	xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+    xmlHttp.send(null);
+};
+
+SceneSceneChannel.showPanel = function()
+{
+	SceneSceneChannel.qualityDisplay();
+	$("#scene_channel_panel").show();
+};
+
+SceneSceneChannel.hidePanel = function()
+{
+	$("#scene_channel_panel").hide();
+	SceneSceneChannel.quality = SceneSceneChannel.qualityPlaying;
+	SceneSceneChannel.qualityIndex = SceneSceneChannel.qualityPlayingIndex;
+};
 
 	function hidePanel() {
 		$("#scene_channel_panel").fadeTo(200, 0);
@@ -189,14 +242,46 @@ var SceneSceneChannel = function(options) {
 			$('#quality_arrow_down').css({ 'opacity' : 1.0 });
 		}
 		
-		if (qualityIndex == 0) {
-			quality = QualityAuto;
+		var xmlHttp = new XMLHttpRequest();
+		
+		var theUrl;
+		if (SceneSceneChannel.state == SceneSceneChannel.STATE_LOADING_TOKEN)
+		{
+			theUrl = 'https://api.twitch.tv/api/channels/' + SceneSceneBrowser.selectedChannel + '/access_token';
 		}
 		else {
 			quality = qualities[qualityIndex - 1].id;
 		}
 		
-		$('#quality_name').css({ color: ((qualityPlaying == quality) ? '#000' : '#333')}).text(quality);
+		xmlHttp.ontimeout = function()
+		{
+		};
+	    xmlHttp.onreadystatechange = function()
+		{
+			if (xmlHttp.readyState === 4)
+			{ 
+				if (xmlHttp.status === 200)
+				{
+					try
+					{
+						SceneSceneChannel.loadDataSuccess(xmlHttp.responseText);
+					}
+					catch (err)
+					{
+						SceneSceneChannel.showDialog("loadDataSuccess() exception: " + err.name + ' ' + err.message);
+					}
+					
+				}
+				else
+				{
+					SceneSceneChannel.loadDataError();
+				}
+			}
+		};
+	    xmlHttp.open("GET", theUrl, true);
+		xmlHttp.timeout = SceneSceneChannel.loadingDataTimeout;
+		xmlHttp.setRequestHeader('Client-ID', 'anwtqukxvrtwxb4flazs2lqlabe3hqv');
+	    xmlHttp.send(null);
 	}
 
 	function isPanelShown() {

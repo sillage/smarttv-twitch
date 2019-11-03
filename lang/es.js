@@ -9,15 +9,17 @@ var LanguageStrings = {
 	viewers: "Espectadores",
 	buffering: "Buffering",
 
-	Error: {
-		no_streams: "Error: Unable to retrieve stream list.",
-		no_games: "Error: Unable to retrieve game list.",
-		no_game_streams: "Error: Unable to retrieve stream list for this game.",
-		render_source: "Format not supported, try High/Medium/Low qualities",
-		render_fixed: "Sorry but it seems like stream\nqualities High/Medium/Low are not supported\non your TV. Try Source quality on various streams.",
-		network_disconnect: "Sin red.",
-		stream_not_found: "Stream no encontrado",
-		authentication_fail: "Fallo de autenticación.",
-		connection_fail: "Ha fallado la conexión."
-	}
-};
+var STR_PLACEHOLDER_OPEN = "Introduce el nombre de un canal...";
+
+var STR_QUALITY = "Calidad";
+
+var STR_RETRYING = "Reintentando";
+var STR_VIEWER = "Espectadores";
+var STR_BUFFERING = "Buffering";
+
+var STR_ERROR_RENDER_SOURCE = "Formato no soportado :(";
+var STR_ERROR_RENDER_FIXED = "Lo siento, pero parece que las calidades del stream\n Alto/Medio/Bajo no estan soportadas\nen tu TV. Prueba la calidad Source en varios streams.";
+var STR_ERROR_NETWORK_DISCONNECT= "Sin red.";
+var STR_ERROR_STREAM_NOT_FOUND = "Stream no encontrado";
+var STR_ERROR_AUTHENTICATION_FAIL = "Fallo de autenticación.";
+var STR_ERROR_CONNECTION_FAIL = "Ha fallado la conexión.";
